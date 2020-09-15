@@ -1,6 +1,6 @@
 import React from "react";
 import {
-    addPost, changeProfileData,
+    addPost, changeProfileContacts, changeProfileData,
     getProfileStatusThunkCreator,
     getProfileThunkCreator, saveAvatar, updateStatusThunkCreator,
 } from "../../redux/profileReducer";
@@ -56,6 +56,7 @@ class Profile extends React.Component {
                              isOwner={+this.props.match.params.userId === this.props.authId}
                              saveAvatar={this.props.saveAvatar}
                              changeProfileData={this.props.changeProfileData}
+                             changeProfileContacts={this.props.changeProfileContacts}
                 />
                 <MyPostsContainer profile={profile}
                                   addPost={this.props.addPost}
@@ -71,7 +72,7 @@ const ProfileContainer = compose(
         {
             getProfile: getProfileThunkCreator, getMyProfile: getMyProfileThunkCreator,
             getStatus: getProfileStatusThunkCreator, updateStatus: updateStatusThunkCreator,
-            addPost, saveAvatar, changeProfileData
+            addPost, saveAvatar, changeProfileData, changeProfileContacts
         }),
     withRouter,
     withAuthRedirect,

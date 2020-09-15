@@ -3,11 +3,13 @@ import style from './ProfileInfo.module.css'
 import Preloader from "../../common/Preloader/Preloader";
 import ProfileStatusContainer from "./ProfileStatus/ProfileStatusWithHooks";
 import {Field, reduxForm} from "redux-form";
+import ProfileFormContainer from "./ProfileForm/ProfileFormContainer";
 
 
 const ProfileInfo = (props) => {
-    const {profile, isOwner, saveAvatar, changeProfileData} = props;
+    const {profile, isOwner, saveAvatar, changeProfileData, changeProfileContacts} = props;
     const [isChangingProfileData, setChangingProfileData] = useState(false);
+
     if (!profile.userId) {
         return <Preloader/>
     }
@@ -21,8 +23,13 @@ const ProfileInfo = (props) => {
     }
 
     const onSaveData = (profileData) => {
-        debugger
         changeProfileData(profileData);
+        setChangingProfileData(false);
+    }
+
+    const onSaveContacts = (contacts) => {
+        debugger
+        changeProfileContacts(contacts);
         setChangingProfileData(false);
     }
 
@@ -49,7 +56,10 @@ const ProfileInfo = (props) => {
                 <ProfileStatusContainer/>
             </div>
             {isOwner && isChangingProfileData ?
-                <ProfileDataReduxForm profile={profile} onSubmit={onSaveData}/> :
+                <ProfileFormContainer profile={profile}
+                                      onSaveData={onSaveData}
+                                      onSaveContacts={onSaveContacts}/>
+                :
                 <ProfileData profile={profile}/>}
             {!isChangingProfileData && isOwner &&
             <button onClick={() => setChangingProfileData(true)}>Change Profile Data</button>}
@@ -64,7 +74,7 @@ const ProfileData = ({profile}) => {
 
     return (
         <div>
-            
+
             <div>
                 <h4 className={style.aboutMe__title}>About Me</h4>
                 <div>Looking for a job: {lookingForAJob ? 'Yes' : 'No'}</div>
@@ -89,47 +99,6 @@ const ProfileData = ({profile}) => {
     )
 
 }
-
-const ProfileDataForm = ({profile, handleSubmit}) => {
-    const {aboutMe, fullName, contacts, lookingForAJob, lookingForAJobDescription} = profile;
-    const data = {aboutMe, fullName, contacts, lookingForAJob, lookingForAJobDescription};
-
-    const keys = Object.keys(data)
-    return (
-        <form onSubmit={handleSubmit}>
-            {keys.map(key => {
-                return (
-                    <div>
-                        <label htmlFor={key}>{key}</label>
-                        <Field name={key} component={'input'} type={'text'} placeholder={key}/>
-                    </div>
-
-                )
-
-            })
-            }
-            <b>Contacts</b>
-            <div>
-                <div>
-                    {
-                        Object.keys(contacts).map(contact => {
-                            return (
-                                <div>
-                                    <label htmlFor={contact}>{contact}</label>
-                                    <Field name={contact} component={'input'} type={'text'} placeholder={contact}/>
-                                </div>
-                            )
-                        })
-                    }
-                </div>
-            </div>
-            <button>Save Changes</button>
-        </form>
-
-
-    )
-}
-const ProfileDataReduxForm = reduxForm({form: 'profileDataForm'})(ProfileDataForm);
 
 const Contacts = ({contactTitle, contactValue}) => {
 
