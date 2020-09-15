@@ -64,7 +64,7 @@ const ProfileData = ({profile}) => {
 
     return (
         <div>
-            <div></div>
+            
             <div>
                 <h4 className={style.aboutMe__title}>About Me</h4>
                 <div>Looking for a job: {lookingForAJob ? 'Yes' : 'No'}</div>
