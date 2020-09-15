@@ -1,0 +1,20 @@
+.friends {
+    margin: 0;
+
+    padding-left: 10px;
+    background-color: green;
+}
+
+.friends__title {
+    font-weight: bold;
+    width: 100%;
+    display: block;
+    margin: 0;
+}
+
+.friends__items {
+    padding: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}

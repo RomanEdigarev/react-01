@@ -1,0 +1,10 @@
+.post {
+    margin: 5px 0;
+    padding-left: 10px;
+    background-color: goldenrod;
+}
+
+.title {
+    margin: 0;
+    color: darkred;
+}
