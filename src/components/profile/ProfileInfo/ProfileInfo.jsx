@@ -55,14 +55,21 @@ const ProfileInfo = (props) => {
                 <div>{profile.fullName}</div>
                 <ProfileStatusContainer/>
             </div>
-            {isOwner && isChangingProfileData ?
-                <ProfileFormContainer profile={profile}
-                                      onSaveData={onSaveData}
-                                      onSaveContacts={onSaveContacts}/>
-                :
-                <ProfileData profile={profile}/>}
-            {!isChangingProfileData && isOwner &&
-            <button onClick={() => setChangingProfileData(true)}>Change Profile Data</button>}
+
+            <div>
+                {isOwner && isChangingProfileData ?
+
+                    <ProfileFormContainer profile={profile}
+                                          onSaveData={onSaveData}
+                                          onSaveContacts={onSaveContacts}/>
+                    :
+
+                    <ProfileData profile={profile}/>}
+
+                {!isChangingProfileData && isOwner &&
+                <button onClick={() => setChangingProfileData(true)}>Change Profile Data</button>}
+            </div>
+
 
         </div>
     )

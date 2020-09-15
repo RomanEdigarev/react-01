@@ -65,7 +65,7 @@ const profileReducer = (state = initialState, action) => {
         }
         case CHANGE_PROFILE_CONTACTS: {
             return {
-                ...state, profile: {...state.profile, contacts: action.contacts}
+                ...state, profile: {...state.profile, contacts: {...state.profile.contacts, ...action.contacts}}
             }
         }
 

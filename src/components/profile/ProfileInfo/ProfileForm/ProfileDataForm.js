@@ -11,14 +11,23 @@ const ProfileData = ({profile, handleSubmit}) => {
     return (
         <form onSubmit={handleSubmit}>
             {keys.map(key => {
-                return (
-                    <div>
-                        <label htmlFor={key}>{key}</label>
-                        <Field name={key} component={'input'} type={'text'} placeholder={key}/>
-                    </div>
+                if(key != 'contacts') {
+                    if(key === 'lookingForAJob') {
+                        return (
+                        <div>
+                            <label htmlFor={key}>{key}</label>
+                            <Field name={key} component={'input'} type={'checkbox'}/>
+                        </div>
+                        )
+                    }
+                    return (
+                        <div>
+                            <label htmlFor={key}>{key}</label>
+                            <Field name={key} component={'input'} type={'text'} placeholder={key}/>
+                        </div>
 
-                )
-
+                    )
+                }
             })
             }
             <button>Save Changes</button>
