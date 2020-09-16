@@ -4,10 +4,11 @@ import Preloader from "../../common/Preloader/Preloader";
 import ProfileStatusContainer from "./ProfileStatus/ProfileStatusWithHooks";
 import {Field, reduxForm} from "redux-form";
 import ProfileFormContainer from "./ProfileForm/ProfileFormContainer";
+import {saveProfileDataChanges} from "../../../redux/profileReducer";
 
 
 const ProfileInfo = (props) => {
-    const {profile, isOwner, saveAvatar, changeProfileData} = props;
+    const {profile, isOwner, saveAvatar, saveProfileDataChanges} = props;
     const [isChangingProfileData, setChangingProfileData] = useState(false);
 
     if (!profile.userId) {
@@ -50,7 +51,7 @@ const ProfileInfo = (props) => {
                 {isOwner && isChangingProfileData ?
 
                     <ProfileFormContainer profile={profile}
-                                          changeProfileData={changeProfileData}
+                                          saveProfileDataChanges={saveProfileDataChanges}
                                           setChangingProfileData={setChangingProfileData}
                     />
 

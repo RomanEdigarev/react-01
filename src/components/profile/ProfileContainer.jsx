@@ -2,7 +2,7 @@ import React from "react";
 import {
     addPost, changeProfileContacts, changeProfileData,
     getProfileStatusThunkCreator,
-    getProfileThunkCreator, saveAvatar, updateStatusThunkCreator,
+    getProfileThunkCreator, saveAvatar, saveProfileDataChanges, updateStatusThunkCreator,
 } from "../../redux/profileReducer";
 import {connect} from "react-redux";
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
@@ -55,7 +55,7 @@ class Profile extends React.Component {
                 <ProfileInfo profile={profile}
                              isOwner={+this.props.match.params.userId === this.props.authId}
                              saveAvatar={this.props.saveAvatar}
-                             changeProfileData={this.props.changeProfileData}
+                             saveProfileDataChanges={this.props.saveProfileDataChanges}
                              changeProfileContacts={this.props.changeProfileContacts}
                 />
                 <MyPostsContainer profile={profile}
@@ -72,7 +72,7 @@ const ProfileContainer = compose(
         {
             getProfile: getProfileThunkCreator, getMyProfile: getMyProfileThunkCreator,
             getStatus: getProfileStatusThunkCreator, updateStatus: updateStatusThunkCreator,
-            addPost, saveAvatar, changeProfileData
+            addPost, saveAvatar, saveProfileDataChanges
         }),
     withRouter,
     withAuthRedirect,

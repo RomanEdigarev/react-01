@@ -127,7 +127,6 @@ export const updateStatusThunkCreator = (status) => {
     return (dispatch) => {
         profileAPI.updateStatus(status)
             .then(response => {
-                debugger
                 if (response.data.resultCode === 0) {
                     dispatch(setStatusProfile(status));
                 }
@@ -139,6 +138,18 @@ export const saveAvatar = (file) => {
     return async (dispatch) => {
         const response = await profileAPI.saveAvatar(file);
         dispatch(saveAvatarSuccess(response.data.data.photos))
+    }
+}
+
+export const saveProfileDataChanges = (profileData) => {
+
+    return async (dispatch, getState) => {
+        const response = await profileAPI.saveProfileChanges(profileData);
+        debugger
+        if (response.data.resultCode === 0) {
+            dispatch(getProfileThunkCreator(getState().authReducer.id))
+        }
+
     }
 }
 
