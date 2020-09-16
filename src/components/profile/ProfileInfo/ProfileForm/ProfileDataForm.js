@@ -3,37 +3,44 @@ import React from "react";
 
 
 
-const ProfileData = ({profile, handleSubmit}) => {
-    const {aboutMe, fullName, contacts, lookingForAJob, lookingForAJobDescription} = profile;
-    const data = {aboutMe, fullName, contacts, lookingForAJob, lookingForAJobDescription};
+const ProfileData = ({profileData, contacts, handleSubmit}) => {
 
-    const keys = Object.keys(data)
     return (
         <form onSubmit={handleSubmit}>
-            {keys.map(key => {
-                if(key != 'contacts') {
+            {
+                Object.keys(profileData).map(key => {
                     if(key === 'lookingForAJob') {
                         return (
-                        <div>
-                            <label htmlFor={key}>{key}</label>
-                            <Field name={key} component={'input'} type={'checkbox'}/>
-                        </div>
+                            <div>
+                                <b>{key}</b>
+                                <Field name={key} component={'input'} type={'checkbox'}/>
+                            </div>
                         )
                     }
                     return (
                         <div>
-                            <label htmlFor={key}>{key}</label>
+                            <b>{key}</b>
                             <Field name={key} component={'input'} type={'text'} placeholder={key}/>
+                        </div>
+                    )
+                })
+
+            }
+            <b>Contacts</b>
+            {
+                Object.keys(contacts).map(contact => {
+                    return (
+                        <div>
+                            <div>{contact}</div>
+                            <div><Field name={`contacts.${contact}`} component={'input'} type={'text'} placeholder={contact}/></div>
                         </div>
 
                     )
-                }
-            })
+                })
             }
             <button>Save Changes</button>
+
         </form>
-
-
     )
 }
 

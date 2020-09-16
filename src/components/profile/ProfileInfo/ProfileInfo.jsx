@@ -7,7 +7,7 @@ import ProfileFormContainer from "./ProfileForm/ProfileFormContainer";
 
 
 const ProfileInfo = (props) => {
-    const {profile, isOwner, saveAvatar, changeProfileData, changeProfileContacts} = props;
+    const {profile, isOwner, saveAvatar, changeProfileData} = props;
     const [isChangingProfileData, setChangingProfileData] = useState(false);
 
     if (!profile.userId) {
@@ -22,16 +22,6 @@ const ProfileInfo = (props) => {
 
     }
 
-    const onSaveData = (profileData) => {
-        changeProfileData(profileData);
-        setChangingProfileData(false);
-    }
-
-    const onSaveContacts = (contacts) => {
-        debugger
-        changeProfileContacts(contacts);
-        setChangingProfileData(false);
-    }
 
 
     return (
@@ -60,8 +50,10 @@ const ProfileInfo = (props) => {
                 {isOwner && isChangingProfileData ?
 
                     <ProfileFormContainer profile={profile}
-                                          onSaveData={onSaveData}
-                                          onSaveContacts={onSaveContacts}/>
+                                          changeProfileData={changeProfileData}
+                                          setChangingProfileData={setChangingProfileData}
+                    />
+
                     :
 
                     <ProfileData profile={profile}/>}

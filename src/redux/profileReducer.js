@@ -7,7 +7,6 @@ const SET_STATUS = 'SET_STATUS';
 const DELETE_POST = 'DELETE_POST';
 const SAVE_AVATAR_SUCCESS = 'SAVE_AVATAR_SUCCESS';
 const CHANGE_PROFILE_DATA ='CHANGE_PROFILE_DATA';
-const CHANGE_PROFILE_CONTACTS = 'CHANGE_PROFILE_CONTACTS';
 
 let initialState = {
     profile: {
@@ -63,11 +62,6 @@ const profileReducer = (state = initialState, action) => {
                 ...state, profile: {...state.profile, ...action.profileData}
             }
         }
-        case CHANGE_PROFILE_CONTACTS: {
-            return {
-                ...state, profile: {...state.profile, contacts: {...state.profile.contacts, ...action.contacts}}
-            }
-        }
 
         default:
             return state;
@@ -100,11 +94,8 @@ const saveAvatarSuccess = (avatar) => {
 }
 
 export const changeProfileData = (profileData) => {
+    debugger
     return {type: CHANGE_PROFILE_DATA, profileData}
-}
-
-export const changeProfileContacts = (contacts) => {
-    return {type: CHANGE_PROFILE_CONTACTS, contacts}
 }
 
 export const getProfileThunkCreator = (userId) => {

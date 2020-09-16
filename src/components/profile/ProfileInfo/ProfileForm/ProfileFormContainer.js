@@ -1,20 +1,22 @@
 import React from "react";
 import ProfileDataForm from "./ProfileDataForm";
-import ProfileContactsFrom from "./ProfileContactsForm";
 
 
-const ProfileFormContainer = ({profile,onSaveData,onSaveContacts}) => {
+const ProfileFormContainer = ({profile, changeProfileData, setChangingProfileData}) => {
+    const {aboutMe, fullName, contacts, lookingForAJob, lookingForAJobDescription} = profile;
+    const profileData = {aboutMe, fullName, lookingForAJob, lookingForAJobDescription};
+
+    const onSaveData = (formData) => {
+        changeProfileData(formData);
+        setChangingProfileData(false);
+    }
+
 
     return (
-        <div>
-            <ProfileDataForm profile={profile}
-                             onSubmit={onSaveData}
-            />
-            <ProfileContactsFrom contacts={profile.contacts}
-                                 onSubmit={onSaveContacts}
-            />
-        </div>
-
+       <ProfileDataForm profileData={profileData}
+                        contacts={contacts}
+                        onSubmit={onSaveData}
+       />
     )
 }
 

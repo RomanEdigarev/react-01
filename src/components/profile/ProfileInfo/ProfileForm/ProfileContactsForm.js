@@ -12,7 +12,7 @@ const ProfileContacts = ({contacts, handleSubmit}) => {
                             return (
                                 <div>
                                     <label htmlFor={contact}>{contact}</label>
-                                    <Field name={contact} component={'input'} type={'text'} placeholder={contact}/>
+                                    <Field name={`contacts.${contact}`} component={'input'} type={'text'} placeholder={contact}/>
                                 </div>
                             )
                         })

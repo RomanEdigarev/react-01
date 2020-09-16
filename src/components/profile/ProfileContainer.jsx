@@ -72,7 +72,7 @@ const ProfileContainer = compose(
         {
             getProfile: getProfileThunkCreator, getMyProfile: getMyProfileThunkCreator,
             getStatus: getProfileStatusThunkCreator, updateStatus: updateStatusThunkCreator,
-            addPost, saveAvatar, changeProfileData, changeProfileContacts
+            addPost, saveAvatar, changeProfileData
         }),
     withRouter,
     withAuthRedirect,
