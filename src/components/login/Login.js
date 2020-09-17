@@ -21,14 +21,16 @@ const Login = (props) => {
     return (
         <div>
             <h1>Login</h1>
-            <LoginReduxForm onSubmit={onSubmit}/>
+            <LoginReduxForm onSubmit={onSubmit}
+                            captchaUrl={props.captchaUrl}
+            />
         </div>
     )
 }
 
 
 const LoginForm = (props) => {
-
+    const captchaUrl = props.captchaUrl;
     return (
         <form onSubmit={props.handleSubmit}>
             <div>
@@ -48,6 +50,8 @@ const LoginForm = (props) => {
             <div>
                 <Field name={'rememberMe'} component={InputWithValidation} type={'checkbox'}/> remember me
             </div>
+            {captchaUrl && <div><img src={captchaUrl} alt="captcha"/></div>}
+            {captchaUrl && <div><Field name={'captcha'} component={InputWithValidation} type={'text'}/></div>}
             {
                 props.error &&
                 <div className={style.form_summary_error}>
@@ -66,7 +70,7 @@ const LoginReduxForm = reduxForm({
 })(LoginForm)
 
 const mapStateToProps = (state) => {
-    return {isAuth: state.authReducer.isAuth}
+    return {isAuth: state.authReducer.isAuth, captchaUrl: state.authReducer.captchaUrl}
 }
 
 export default connect(mapStateToProps, {loginUser, logoutUser})(Login);
