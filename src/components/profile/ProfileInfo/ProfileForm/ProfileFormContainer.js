@@ -7,17 +7,21 @@ const ProfileFormContainer = ({profile, saveProfileDataChanges, setChangingProfi
     const profileData = {aboutMe, fullName, lookingForAJob, lookingForAJobDescription};
 
     const onSaveData = (formData) => {
-        saveProfileDataChanges(formData);
-        setChangingProfileData(false);
+        saveProfileDataChanges(formData)
+            .then(
+                () => {
+                    setChangingProfileData(false);
+                }
+            )
     }
 
 
     return (
-       <ProfileDataForm profileData={profileData}
-                        contacts={contacts}
-                        onSubmit={onSaveData}
-                        initialValues={profile}
-       />
+        <ProfileDataForm profileData={profileData}
+                         contacts={contacts}
+                         onSubmit={onSaveData}
+                         initialValues={profile}
+        />
     )
 }
 
