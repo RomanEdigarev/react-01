@@ -7,7 +7,7 @@ const SET_USER_PROFILE = 'SET_USER_PROFILE';
 const SET_STATUS = 'SET_STATUS';
 const DELETE_POST = 'DELETE_POST';
 const SAVE_AVATAR_SUCCESS = 'SAVE_AVATAR_SUCCESS';
-const CHANGE_PROFILE_DATA ='CHANGE_PROFILE_DATA';
+const CHANGE_PROFILE_DATA = 'CHANGE_PROFILE_DATA';
 
 let initialState = {
     profile: {
@@ -125,13 +125,16 @@ export const getProfileStatusThunkCreator = (userId) => {
 
 export const updateStatusThunkCreator = (status) => {
 
-    return (dispatch) => {
-        profileAPI.updateStatus(status)
-            .then(response => {
-                if (response.data.resultCode === 0) {
-                    dispatch(setStatusProfile(status));
-                }
-            })
+    return async (dispatch) => {
+        try {
+            const response = await profileAPI.updateStatus(status)
+            if (response.data.resultCode === 0) {
+                dispatch(setStatusProfile(status));
+            }
+        } catch (error) {
+            console.log(error)
+        }
+
     }
 }
 
@@ -155,8 +158,6 @@ export const saveProfileDataChanges = (profileData) => {
 
     }
 }
-
-
 
 
 export default profileReducer;
