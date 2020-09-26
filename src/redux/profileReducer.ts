@@ -17,12 +17,8 @@ const initialState = {
 
 type InitialStateType = typeof initialState;
 
-interface Action <T> {
-    type: string;
-    param: T;
-}
 
-const profileReducer = (state: InitialStateType = initialState, action : Action<any>) : InitialStateType => {
+const profileReducer = (state: InitialStateType = initialState, action : any) : InitialStateType => {
 
     switch (action.type) {
         case ADD_POST: {
@@ -30,7 +26,7 @@ const profileReducer = (state: InitialStateType = initialState, action : Action<
         }
 
         case SET_USER_PROFILE: {
-            return {...state, profile: action.param}
+            return {...state, profile: {...action.param}}
         }
         case  SET_STATUS: {
             return {...state, status: action.param}
@@ -47,33 +43,44 @@ const profileReducer = (state: InitialStateType = initialState, action : Action<
 
 }
 
-const addPost = (text: string) : Action<string>=> {
+type AddPostActionType = {type: typeof  ADD_POST, text: string}
+export const addPost = (text: string) : AddPostActionType => {
     return {
-        param: text, type: typeof ADD_POST
+        text, type: ADD_POST
     }
 }
 
-export const setUserProfile = (profile: ProfileType) : Action<any> => {
+
+type SetUserProfileActionType = {type: typeof SET_USER_PROFILE, profile: ProfileType}
+export const setUserProfile = (profile: ProfileType) : SetUserProfileActionType => {
     return {
-        param: profile, type: typeof SET_USER_PROFILE
+        profile, type: SET_USER_PROFILE
     }
 }
 
-const setStatusProfile = (status: string) : Action<string> => {
+
+type SetStatusProfile = {type: typeof SET_STATUS, status: string}
+const setStatusProfile = (status: string) : SetStatusProfile => {
     return {
-        param: status, type: typeof SET_STATUS
+        status, type: SET_STATUS
     }
 }
 
-const saveAvatarSuccess = (avatar:any) : Action<any> => {
+
+type SaveAvatarSuccess = {type: typeof SAVE_AVATAR_SUCCESS, avatar:any}
+const saveAvatarSuccess = (avatar:any) : SaveAvatarSuccess  => {
     return {
-        param: avatar, type: typeof SAVE_AVATAR_SUCCESS
+        avatar, type: SAVE_AVATAR_SUCCESS
     }
 }
 
-const changeProfileData = (profileData:any) : Action<any> => {
-    return { param: profileData, type: CHANGE_PROFILE_DATA}
+
+type ChangeProfileData = {type: typeof CHANGE_PROFILE_DATA, profileData : any}
+export const changeProfileData = (profileData:any) : ChangeProfileData => {
+    return {profileData, type: CHANGE_PROFILE_DATA}
 }
+
+
 
 export const getMyProfileThunkCreator = () => {
 
@@ -134,3 +141,5 @@ export const saveProfileDataChanges = (profileData:any) => {
 
     }
 }
+
+export default profileReducer;

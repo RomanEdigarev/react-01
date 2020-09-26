@@ -3,7 +3,7 @@ import {
     addPost, changeProfileContacts, changeProfileData,
     getProfileStatusThunkCreator,
     getProfileThunkCreator, saveAvatar, saveProfileDataChanges, updateStatusThunkCreator,
-} from "../../redux/profileReducer";
+} from "../../redux/profileReducer.ts";
 import {connect} from "react-redux";
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
 import {withRouter} from "react-router";
@@ -58,9 +58,9 @@ class Profile extends React.Component {
                              saveProfileDataChanges={this.props.saveProfileDataChanges}
                              changeProfileContacts={this.props.changeProfileContacts}
                 />
-                <MyPostsContainer profile={profile}
-                                  addPost={this.props.addPost}
-                />
+                {/*<MyPostsContainer profile={profile}*/}
+                {/*                  addPost={this.props.addPost}*/}
+                {/*/>*/}
             </div>
         )
     }

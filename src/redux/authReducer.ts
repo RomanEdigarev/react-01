@@ -1,6 +1,7 @@
 import {loginAPI, profileAPI, securityAPI} from "../api/api";
-import {setUserProfile} from "./profileReducer";
+
 import {stopSubmit} from "redux-form";
+import {setUserProfile} from './profileReducer';
 
 const SET_USER_DATA = 'SET_USER_DATA';
 const LOGOUT_USER_DATA = 'LOGOUT_USER_DATA';
@@ -24,7 +25,7 @@ let initialState: InitialStateType = {
     captchaUrl: null,
 }
 
-const authReducer = (state = initialState, action: any) : InitialStateType=> {
+const authReducer = (state = initialState, action: any): InitialStateType => {
     switch (action.type) {
         case SET_USER_DATA: {
             return {
@@ -64,28 +65,27 @@ type SetAuthUserDataActionType = {
     fullName: string;
 }
 
-export const setAuthUserData = (id: number, fullName:string ) : SetAuthUserDataActionType => {
-    return { type: SET_USER_DATA, id, fullName }
+export const setAuthUserData = (id: number, fullName: string): SetAuthUserDataActionType => {
+    return {type: SET_USER_DATA, id, fullName}
 }
 
 
 type LogOutUserDataActionType = {
     type: typeof LOGOUT_USER_DATA;
 }
-export const logOutUserData = () : LogOutUserDataActionType => {
+export const logOutUserData = (): LogOutUserDataActionType => {
     return {
         type: LOGOUT_USER_DATA,
     }
 }
 
-const setCaptchaUrl = (captchaUrl:any ) => {
+const setCaptchaUrl = (captchaUrl: any) => {
     return {
         type: SET_CAPTCHA_URL, captchaUrl
     }
 }
 
 export const getMyProfileThunkCreator = () => {
-
     return async (dispatch: Function) => {
 
         let data = await profileAPI.getMyProfile();
@@ -95,30 +95,6 @@ export const getMyProfileThunkCreator = () => {
             const {userId, fullName} = profile;
             dispatch(setAuthUserData(userId, fullName));
             dispatch(setUserProfile(profile));
-        }
-    }
-}
-
-export const loginUser = (email:string, password:string, rememberMe:boolean, captcha:string) => {
-    return async (dispatch:Function) => {
-        const response = await loginAPI.loginUser(email, password, rememberMe, captcha);
-        if (response.data.resultCode === 0) {
-            dispatch(getMyProfileThunkCreator())
-        } else {
-            if(response.data.resultCode === 10) {
-                dispatch(getCaptchaUrl());
-            }
-            let messages = response.data.messages.length > 0 ? response.data.messages[0] : 'Some error';
-            dispatch(stopSubmit('loginForm', {_error: messages}));
-        }
-    }
-}
-
-export const logoutUser = () => {
-    return async (dispatch:Function) => {
-        const response = await loginAPI.logoutUser();
-        if (response.data.resultCode === 0) {
-            dispatch(logOutUserData());
         }
     }
 }
@@ -133,5 +109,28 @@ export const getCaptchaUrl = () => {
 
 }
 
+export const loginUser = (email: string, password: string, rememberMe: boolean, captcha: string) => {
+    return async (dispatch: Function) => {
+        const response = await loginAPI.loginUser(email, password, rememberMe, captcha);
+        if (response.data.resultCode === 0) {
+            dispatch(getMyProfileThunkCreator())
+        } else {
+            if (response.data.resultCode === 10) {
+                dispatch(getCaptchaUrl());
+            }
+            let messages = response.data.messages.length > 0 ? response.data.messages[0] : 'Some error';
+            dispatch(stopSubmit('loginForm', {_error: messages}));
+        }
+    }
+}
+
+export const logoutUser = () => {
+    return async (dispatch: Function) => {
+        const response = await loginAPI.logoutUser();
+        if (response.data.resultCode === 0) {
+            dispatch(logOutUserData());
+        }
+    }
+}
 
 export default authReducer;

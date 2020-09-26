@@ -1,6 +1,13 @@
 const CREATE_NEW_MESSAGE_FROM_FRIEND = 'CREATE-NEW-MESSAGE-FROM-FRIEND';
 const ADD_MESSAGE_FROM_FRIEND = 'ADD-MESSAGE-FROM-FRIEND';
 
+type FriendsDataType = {
+    id: number | null
+    name: string | null
+    avatar: string | null
+    messages: Array<string>
+}
+
 let initialState = {
     friends: {
         friendsData: [
@@ -20,18 +27,20 @@ let initialState = {
                 id: 4, name: 'Polina', avatar: 'https://cdn.iconscout.com/icon/free/png-256/avatar-373-456325.png',
                 messages: ['Hello! My name is Polina '],
             },
-        ]
+        ] as Array<FriendsDataType>
     },
 }
 
-const friendsReducer = (state = initialState, action) => {
+type InitialStateType = typeof initialState;
+
+const friendsReducer = (state = initialState, action: any) : InitialStateType => {
     const stateCopy = {...state};
     stateCopy.friends.friendsData = [...state.friends.friendsData];
     let friendsData = stateCopy.friends.friendsData;
 
     switch (action.type) {
         case ADD_MESSAGE_FROM_FRIEND: {
-            let friend = friendsData.find(friend => friend.id === action.id);
+            let friend: any = friendsData.find(friend => friend.id === action.id);
             friend.messages.push(`${action.newMessageText}\n`);
             return stateCopy;
         }
@@ -41,7 +50,13 @@ const friendsReducer = (state = initialState, action) => {
     }
 }
 
-export const addMessage = (id, newMessageText) => {
+
+type AddMessageActionType = {
+    type: typeof ADD_MESSAGE_FROM_FRIEND
+    id:number
+    newMessageText:string
+}
+export const addMessage = (id: number, newMessageText: string) : AddMessageActionType => {
 
     const ADD_MESSAGE_FROM_FRIEND = 'ADD-MESSAGE-FROM-FRIEND';
     return {

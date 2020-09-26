@@ -7,7 +7,6 @@ import {Textarea, TextareaWithValidation} from "../../common/FormsControl/FormsC
 
 const MyPostsContainer = React.memo((props) => {
 
-    console.log('render');
     const {postsData} = props.profile;
     const {addPost} = props;
 
