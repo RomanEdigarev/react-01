@@ -1,12 +1,9 @@
+import {FriendsDataType} from "./types/types";
+
 const CREATE_NEW_MESSAGE_FROM_FRIEND = 'CREATE-NEW-MESSAGE-FROM-FRIEND';
 const ADD_MESSAGE_FROM_FRIEND = 'ADD-MESSAGE-FROM-FRIEND';
 
-type FriendsDataType = {
-    id: number | null
-    name: string | null
-    avatar: string | null
-    messages: Array<string>
-}
+
 
 let initialState = {
     friends: {

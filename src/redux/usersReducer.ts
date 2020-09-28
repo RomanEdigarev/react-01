@@ -1,4 +1,7 @@
 import {usersAPI} from "../api/api";
+import {UserType} from "./types/types";
+import {ThunkAction} from "redux-thunk";
+import {AppStateType} from "./reduxStore";
 
 const FOLLOW = 'FOLLOW';
 const UNFOLLOW = 'UNFOLLOW';
@@ -9,17 +12,7 @@ const TOGGLE_FETCHING = 'TOGGLE_FETCHING';
 const TOGGLE_IS_FOLLOWING_PROGRESS = 'TOGGLE_IS_FOLLOWING_PROGRESS';
 
 
-type UserType = {
-    name: string | null,
-    id: number | null,
-    uniqueUrlName: string | null,
-    photos: {
-        "small": string | null,
-        "large": string | null
-    },
-    status: string | null,
-    followed: boolean
-}
+
 
 const initialState = {
     users: [] as Array<UserType>,
@@ -31,8 +24,10 @@ const initialState = {
 }
 
 type InitialStateType = typeof initialState
+type ActionsTypes = FollowSuccessActionType | UnfollowSuccessActionType | SetUsersActionType | SetCurrentPageActionType
+    | SetTotalUsersCount | ToggleIsFetchingActionType | ToggleFollowingProgressActionType
 
-const usersReducer = (state = initialState, action : any) : InitialStateType => {
+const usersReducer = (state = initialState, action : ActionsTypes) : InitialStateType => {
     switch (action.type) {
         case FOLLOW: {
             return {
@@ -127,9 +122,11 @@ export const toggleFollowingProgress = (followingInProgress: boolean, userId:num
     return {type: TOGGLE_IS_FOLLOWING_PROGRESS, followingInProgress, userId}
 }
 
-export const getUsersThunkCreator = (currentPage:number, pageSize:number) => {
 
-    return async (dispatch:Function) => {
+type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>;
+export const getUsersThunkCreator = (currentPage:number, pageSize:number) : ThunkType => {
+
+    return async (dispatch, getState)  => {
         dispatch(toggleIsFetching(true));
         const data = await usersAPI.getUsers(currentPage, pageSize);
         dispatch(toggleIsFetching(false));
@@ -138,9 +135,9 @@ export const getUsersThunkCreator = (currentPage:number, pageSize:number) => {
     }
 }
 
-export const followThunkCreator = (userId:number) => {
+export const followThunkCreator = (userId:number) : ThunkType => {
 
-    return async (dispatch:Function) => {
+    return async (dispatch) => {
         dispatch(toggleFollowingProgress(true, userId));
         const data = await usersAPI.followAPI(userId);
         if (data.resultCode === 0) {
@@ -150,9 +147,9 @@ export const followThunkCreator = (userId:number) => {
     }
 }
 
-export const unfollowThunkCreator = (userId:number) => {
+export const unfollowThunkCreator = (userId:number) : ThunkType => {
 
-    return async (dispatch:Function) => {
+    return async (dispatch) => {
         dispatch(toggleFollowingProgress(true, userId));
         const data = await usersAPI.unfollowAPI(userId);
         if (data.resultCode === 0) {

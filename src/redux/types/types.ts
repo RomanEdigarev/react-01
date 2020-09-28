@@ -1,6 +1,6 @@
 
 
-export type ProfileType = {
+export type Types = {
     aboutMe: string | null,
     contacts: {
         facebook: string | null,
@@ -20,4 +20,23 @@ export type ProfileType = {
         small: any,
         large: any
     }
+}
+
+export type UserType = {
+    name: string | null,
+    id: number,
+    uniqueUrlName: string | null,
+    photos: {
+        "small": string | null,
+        "large": string | null
+    },
+    status: string | null,
+    followed: boolean
+}
+
+export type FriendsDataType = {
+    id: number | null
+    name: string | null
+    avatar: string | null
+    messages: Array<string>
 }

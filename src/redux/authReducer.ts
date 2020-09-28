@@ -1,7 +1,9 @@
 import {loginAPI, profileAPI, securityAPI} from "../api/api";
 
 import {stopSubmit} from "redux-form";
-import {setUserProfile} from './profileReducer';
+import {setUserProfile, SetUserProfileActionType} from './profileReducer';
+import {ThunkAction} from "redux-thunk";
+import {AppStateType} from "./reduxStore";
 
 const SET_USER_DATA = 'SET_USER_DATA';
 const LOGOUT_USER_DATA = 'LOGOUT_USER_DATA';
@@ -25,7 +27,9 @@ let initialState: InitialStateType = {
     captchaUrl: null,
 }
 
-const authReducer = (state = initialState, action: any): InitialStateType => {
+
+type ActionsType = SetAuthUserDataActionType | LogOutUserDataActionType | SetCaptchaUrlActionType | SetUserProfileActionType
+const authReducer = (state = initialState, action:ActionsType): InitialStateType => {
     switch (action.type) {
         case SET_USER_DATA: {
             return {
@@ -79,14 +83,20 @@ export const logOutUserData = (): LogOutUserDataActionType => {
     }
 }
 
-const setCaptchaUrl = (captchaUrl: any) => {
+type SetCaptchaUrlActionType = {
+    type: typeof SET_CAPTCHA_URL
+    captchaUrl: string
+}
+const setCaptchaUrl = (captchaUrl: string) : SetCaptchaUrlActionType => {
     return {
         type: SET_CAPTCHA_URL, captchaUrl
     }
 }
 
-export const getMyProfileThunkCreator = () => {
-    return async (dispatch: Function) => {
+
+type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsType>
+export const getMyProfileThunkCreator = () : ThunkType => {
+    return async (dispatch) => {
 
         let data = await profileAPI.getMyProfile();
 
@@ -99,9 +109,9 @@ export const getMyProfileThunkCreator = () => {
     }
 }
 
-export const getCaptchaUrl = () => {
+export const getCaptchaUrl = () : ThunkType => {
 
-    return async (dispatch: Function) => {
+    return async (dispatch) => {
         const response = await securityAPI.getCaptchaUrl();
         const captchaUrl = response.data.url;
         dispatch(setCaptchaUrl(captchaUrl));
@@ -109,8 +119,8 @@ export const getCaptchaUrl = () => {
 
 }
 
-export const loginUser = (email: string, password: string, rememberMe: boolean, captcha: string) => {
-    return async (dispatch: Function) => {
+export const loginUser = (email: string, password: string, rememberMe: boolean, captcha: string) : ThunkType => {
+    return async (dispatch) => {
         const response = await loginAPI.loginUser(email, password, rememberMe, captcha);
         if (response.data.resultCode === 0) {
             dispatch(getMyProfileThunkCreator())
@@ -124,8 +134,8 @@ export const loginUser = (email: string, password: string, rememberMe: boolean, 
     }
 }
 
-export const logoutUser = () => {
-    return async (dispatch: Function) => {
+export const logoutUser = () : ThunkType => {
+    return async (dispatch) => {
         const response = await loginAPI.logoutUser();
         if (response.data.resultCode === 0) {
             dispatch(logOutUserData());

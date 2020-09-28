@@ -1,9 +1,21 @@
-import React from "react";
+import React, {FC} from "react";
 import Paginator from "../common/Pagintaor/Paginator";
 import User from "./User";
+import {UserType} from "../../redux/types/types";
 
 
-const Users = (props) => {
+type UsersType = {
+    currentPage: number
+    pageSize:number
+    totalUsersCount:number
+    users:Array<UserType>
+    follow: (id:number) => void
+    unfollow:(id:number) => void
+    onPageChanged: (page: number) => void
+    followingInProgress: Array<number>
+}
+
+const Users : FC<UsersType> = (props) => {
 
     const {currentPage, pageSize, totalUsersCount, users, follow, unfollow, onPageChanged, followingInProgress} = props;
 

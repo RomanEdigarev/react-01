@@ -1,7 +1,17 @@
-import React from "react";
+import React, {FC} from "react";
 import {NavLink} from "react-router-dom";
+import {UserType} from "../../redux/types/types";
 
-const User = ({user,follow, unfollow,followingInProgress}) => {
+
+
+type UserComponentType = {
+    user : UserType
+    follow : (userId:number)  => void
+    unfollow : (userId:number)  => void
+    followingInProgress : Array<number>
+}
+
+const User : FC<UserComponentType> = ({user,follow, unfollow,followingInProgress}) => {
 
     return (
         <div>

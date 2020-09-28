@@ -1,11 +1,11 @@
 import React from "react";
 import {connect} from 'react-redux';
 import {
-    follow, followThunkCreator,
+     followThunkCreator,
     getUsersThunkCreator,
     setCurrentPage,
     toggleFollowingProgress,
-    unfollow, unfollowThunkCreator
+    unfollowThunkCreator
 
 } from "../../redux/usersReducer";
 import Users from "./Users";
@@ -16,8 +16,10 @@ import {
     getCurrentPageSelector, getFollowingInProgressSelector, getIsFetchingSelector,
     getPageSizeSelector,
     getTotalUsersCountSelector,
-    getUsersSelector, getUsersSuperSelector
+     getUsersSuperSelector
 } from "../../redux/usersSelectors";
+import {UserType} from "../../redux/types/types";
+import {AppStateType} from "../../redux/reduxStore";
 
 
 // const mapStateToProps = (state) => {
@@ -38,7 +40,31 @@ import {
 //     }
 // }
 
-const mapStateToProps = (state) => {
+
+type MapStateToPropsType = {
+    users: Array<UserType>,
+    pageSize: number,
+    totalUsersCount: number,
+    currentPage: number,
+    isFetching: boolean,
+    followingInProgress: Array<number>
+}
+
+type MapDispatchToProps = {
+    getUsers: (currentPage:number, pageSize:number) => void
+    setCurrentPage : (page: number) => void
+    follow: (userId:number) => void
+    unfollow:(userId:number) => void
+}
+
+type OwnPropsType = {
+    pageTitle: string
+}
+
+type PropsType = MapStateToPropsType & MapDispatchToProps & OwnPropsType
+
+
+const mapStateToProps = (state : AppStateType) : MapStateToPropsType => {
 
     return {
         users: getUsersSuperSelector(state),
@@ -51,20 +77,22 @@ const mapStateToProps = (state) => {
 }
 
 
-class User extends React.Component {
+
+
+class User extends React.Component<PropsType> {
 
     componentDidMount() {
         this.props.getUsers(this.props.currentPage, this.props.pageSize)
     }
 
-    onPageChanged = (page) => {
+    onPageChanged = (page:number) => {
         this.props.getUsers(page, this.props.pageSize)
         this.props.setCurrentPage(page);
     }
 
 
     render() {
-        const {currentPage, pageSize, totalUsersCount, users, follow, unfollow, toggleFollowingProgress, followingInProgress} = this.props
+        const {currentPage, pageSize, totalUsersCount, users, follow, unfollow, followingInProgress} = this.props
 
         return (
             <>
@@ -87,11 +115,10 @@ class User extends React.Component {
 
 const UsersContainer = compose(
     withAuthRedirect,
-    connect(mapStateToProps,
+    connect<MapStateToPropsType, MapDispatchToProps, OwnPropsType, AppStateType>
+    (mapStateToProps,
         {
-            follow: followThunkCreator, unfollow: unfollowThunkCreator,
-            setCurrentPage,
-            toggleFollowingProgress, getUsers: getUsersThunkCreator
+            follow : followThunkCreator, unfollow: unfollowThunkCreator, getUsers: getUsersThunkCreator, setCurrentPage
 
         })
 )(User)
