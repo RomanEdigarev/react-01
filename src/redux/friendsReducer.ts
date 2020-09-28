@@ -30,7 +30,9 @@ let initialState = {
 
 type InitialStateType = typeof initialState;
 
-const friendsReducer = (state = initialState, action: any) : InitialStateType => {
+
+type ActionsType = AddMessageActionType
+const friendsReducer = (state = initialState, action: ActionsType) : InitialStateType => {
     const stateCopy = {...state};
     stateCopy.friends.friendsData = [...state.friends.friendsData];
     let friendsData = stateCopy.friends.friendsData;

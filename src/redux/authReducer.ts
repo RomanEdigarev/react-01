@@ -10,7 +10,7 @@ const LOGOUT_USER_DATA = 'LOGOUT_USER_DATA';
 const SET_CAPTCHA_URL = 'SET_CAPTCHA_URL';
 
 type InitialStateType = {
-    id: number | null,
+    id: number | null ,
     email: string | null,
     login: string | null,
     isFetching: boolean,
