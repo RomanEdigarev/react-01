@@ -23,7 +23,7 @@ const ProfileStatusFC : FC<ProfileStatusPropsType> = (props) => {
 
     useEffect(() => {
         setStatus(props.status)
-    }, [])
+    }, [props.status])
 
     const activateMode = () => {
         setEditMode(true)

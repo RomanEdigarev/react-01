@@ -1,4 +1,4 @@
-import {profileAPI} from "../api/api";
+import {profileAPI, ResultCode} from "../api/api";
 import {FormAction, stopSubmit} from "redux-form";
 
 import {ProfileType} from "./types/types";
@@ -96,7 +96,7 @@ export const getMyProfileThunkCreator = () : ThunkType => {
 
 }
 
-export const getProfileThunkCreator = (userId: number | null) : ThunkType => {
+export const getProfileThunkCreator = (userId: number | any) : ThunkType => {
 
     return async (dispatch) => {
         const data = await profileAPI.getProfile(userId);
@@ -116,7 +116,7 @@ export const updateStatusThunkCreator = (status: string)  : ThunkType => {
     return async (dispatch) => {
         try {
             const response = await profileAPI.updateStatus(status)
-            if (response.data.resultCode === 0) {
+            if (response.data.resultCode === ResultCode.Success) {
                 dispatch(setStatusProfile(status));
             }
         } catch (error) {
@@ -137,7 +137,7 @@ export const saveProfileDataChanges = (profileData:any) : ThunkType => {
 
     return async (dispatch, getState) => {
         const response = await profileAPI.saveProfileChanges(profileData);
-        if (response.data.resultCode === 0) {
+        if (response.data.resultCode === ResultCode.Success) {
             dispatch(getProfileThunkCreator(getState().authReducer.id))
         } else {
             dispatch(stopSubmit('profileDataForm', {_error: response.data.messages[0]}))
