@@ -1,7 +1,7 @@
 import {profileAPI} from "../api/api";
 import {FormAction, stopSubmit} from "redux-form";
 
-import {Types} from "./types/types";
+import {ProfileType} from "./types/types";
 import {ThunkAction} from "redux-thunk";
 import {AppStateType} from "./reduxStore";
 const ADD_POST = 'ADD-POST';
@@ -13,8 +13,8 @@ const SAVE_AVATAR_SUCCESS = 'SAVE_AVATAR_SUCCESS';
 const CHANGE_PROFILE_DATA = 'CHANGE_PROFILE_DATA';
 
 const initialState = {
-    profile: null as Types | null,
-    status: null as string | null,
+    profile: {} as ProfileType,
+    status: '',
 }
 
 type InitialStateType = typeof initialState;
@@ -34,7 +34,7 @@ const profileReducer = (state: InitialStateType = initialState, action : Actions
             return {...state, status: action.status}
         }
         case SAVE_AVATAR_SUCCESS: {
-            return {...state, profile: {...state.profile, photos: action.avatar} as Types }
+            return {...state, profile: {...state.profile, photos: action.avatar} as ProfileType }
         }
 
         default : {
@@ -53,8 +53,8 @@ export const addPost = (text: string) : AddPostActionType => {
 }
 
 
-export type SetUserProfileActionType = {type: typeof SET_USER_PROFILE, profile: Types}
-export const setUserProfile = (profile: Types) : SetUserProfileActionType => {
+export type SetUserProfileActionType = {type: typeof SET_USER_PROFILE, profile: ProfileType}
+export const setUserProfile = (profile: ProfileType) : SetUserProfileActionType => {
     return {
         profile, type: SET_USER_PROFILE
     }

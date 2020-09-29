@@ -1,13 +1,20 @@
-import React, {useState} from "react";
+import React, {FC, InputHTMLAttributes, ReactElement, useState} from "react";
 import style from './ProfileInfo.module.css'
 import Preloader from "../../common/Preloader/Preloader";
-import ProfileStatusContainer from "./ProfileStatus/ProfileStatusWithHooks";
-import {Field, reduxForm} from "redux-form";
 import ProfileFormContainer from "./ProfileForm/ProfileFormContainer";
-import {saveProfileDataChanges} from "../../../redux/profileReducer";
+import {ProfileType} from "../../../redux/types/types";
+import ProfileStatusContainer from "./ProfileStatus/ProfileStatusContainer";
 
 
-const ProfileInfo = (props) => {
+type ProfileInfoPropsType  = {
+        profile : ProfileType
+        isOwner : boolean
+        saveAvatar : (avatar: any) => void
+        saveProfileDataChanges : () => void
+        changeProfileData : () => void
+}
+
+const ProfileInfo : FC<ProfileInfoPropsType>= (props) => {
     const {profile, isOwner, saveAvatar, saveProfileDataChanges} = props;
     const [isChangingProfileData, setChangingProfileData] = useState(false);
 
@@ -15,9 +22,9 @@ const ProfileInfo = (props) => {
         return <Preloader/>
     }
 
-    const avatarSelected = (e) => {
-        if (e.target.files.length) {
-            const avatar = e.target.files[0];
+    const avatarSelected = (e : React.ChangeEvent<HTMLInputElement>) => {
+        if (e.currentTarget.files!.length) {
+            const avatar = e.currentTarget.files![0];
             saveAvatar(avatar);
         }
 
@@ -68,8 +75,10 @@ const ProfileInfo = (props) => {
     )
 }
 
-
-const ProfileData = ({profile}) => {
+type ProfileDataProps = {
+    profile : ProfileType
+}
+const ProfileData : FC<ProfileDataProps> = ({profile}) => {
     const {lookingForAJob, lookingForAJobDescription, contacts} = profile;
 
     return (
@@ -100,7 +109,12 @@ const ProfileData = ({profile}) => {
 
 }
 
-const Contacts = ({contactTitle, contactValue}) => {
+
+type ContactsPropsType = {
+    contactTitle : string | null
+    contactValue : string | null
+}
+const Contacts  : FC <ContactsPropsType>= ({contactTitle, contactValue}) => {
 
     return (
         <div className={style.contact}>

@@ -1,16 +1,19 @@
 import React from "react";
 import {
-    addPost, changeProfileContacts, changeProfileData,
+    addPost,
     getProfileStatusThunkCreator,
-    getProfileThunkCreator, saveAvatar, saveProfileDataChanges, updateStatusThunkCreator,
-} from "../../redux/profileReducer.ts";
+    getProfileThunkCreator, saveAvatar,
+    saveProfileDataChanges, updateStatusThunkCreator, changeProfileData
+} from "../../redux/profileReducer";
 import {connect} from "react-redux";
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
-import {withRouter} from "react-router";
+import {RouteComponentProps, withRouter} from "react-router";
 import {compose} from "redux";
 import {getMyProfileThunkCreator} from "../../redux/authReducer";
-import MyPostsContainer from "./MyPosts/MyPostContainer";
+
 import {withAuthRedirect} from "../../hoc/WithAuthRedirect";
+import {AppStateType} from "../../redux/reduxStore";
+import {ProfileType} from "../../redux/types/types";
 
 
 // let mapDispatchToProps = (dispatch) => {
@@ -21,11 +24,29 @@ import {withAuthRedirect} from "../../hoc/WithAuthRedirect";
 // }
 
 
-let mapStateToProps = (state) => {
+type MapStateToPropsProfileContainer = {
+    profile: ProfileType
+    authId : number | null
+}
+
+type MapDispatchToPropsProfileContainer = {
+    getProfile : (userId: number) => void
+    getMyProfile : () => void
+    getStatus : () => void
+    updateStatus : () => void
+    addPost : () => void
+    saveAvatar : () => void
+    saveProfileDataChanges : () => void
+    changeProfileData : () => void
+}
+
+let mapStateToProps = (state : AppStateType) : MapStateToPropsProfileContainer => {
     return {profile: state.profileReducer.profile, authId: state.authReducer.id}
 }
 
-class Profile extends React.Component {
+type PropsTypeProfile = MapStateToPropsProfileContainer & MapDispatchToPropsProfileContainer & RouteComponentProps<any>
+
+class Profile extends React.Component<PropsTypeProfile> {
 
 
     refreshProfile() {
@@ -41,8 +62,8 @@ class Profile extends React.Component {
         this.refreshProfile();
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if(this.props.match.params.userId != prevProps.match.params.userId) {
+    componentDidUpdate(prevProps:any, prevState: any, snapshot:any) {
+        if (this.props.match.params.userId != prevProps.match.params.userId) {
             this.refreshProfile();
         }
     }
@@ -55,7 +76,7 @@ class Profile extends React.Component {
                              isOwner={+this.props.match.params.userId === this.props.authId}
                              saveAvatar={this.props.saveAvatar}
                              saveProfileDataChanges={this.props.saveProfileDataChanges}
-                             changeProfileContacts={this.props.changeProfileContacts}
+                             changeProfileData={this.props.changeProfileData}
                 />
                 {/*<MyPostsContainer profile={profile}*/}
                 {/*                  addPost={this.props.addPost}*/}
@@ -67,11 +88,11 @@ class Profile extends React.Component {
 
 
 const ProfileContainer = compose(
-    connect(mapStateToProps,
+    connect<MapStateToPropsProfileContainer, MapDispatchToPropsProfileContainer | any, null, AppStateType>(mapStateToProps,
         {
             getProfile: getProfileThunkCreator, getMyProfile: getMyProfileThunkCreator,
             getStatus: getProfileStatusThunkCreator, updateStatus: updateStatusThunkCreator,
-            addPost, saveAvatar, saveProfileDataChanges
+            addPost, saveAvatar, saveProfileDataChanges, changeProfileData
         }),
     withRouter,
     withAuthRedirect,

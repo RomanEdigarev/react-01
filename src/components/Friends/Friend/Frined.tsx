@@ -13,7 +13,6 @@ export type FriendPropsType = {
 
 const Friend : FC<FriendPropsType> = (props) => {
     const {avatar, name, id} = props
-    debugger
     return (
         <div>
             <NavLink to={`/messages/${id}`}><div className={style.friend__name}>{name}</div></NavLink>

@@ -1,6 +1,6 @@
 
 
-export type Types = {
+export type ProfileType = {
     aboutMe: string | null,
     contacts: {
         facebook: string | null,
@@ -11,7 +11,7 @@ export type Types = {
         youtube: string | null,
         github: string | null,
         mainLink: string | null
-    },
+    } | any,
     lookingForAJob: boolean,
     lookingForAJobDescription: string | null,
     fullName: string,
