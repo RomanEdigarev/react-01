@@ -1,19 +1,25 @@
-import React from "react";
-import {Field, reduxForm} from "redux-form";
+import React, {FC} from "react";
+import {Field, InjectedFormProps, reduxForm} from "redux-form";
 import {InputWithValidation} from "../common/FormsControl/FormsControls";
 import {requiredField} from "../../utils/validators/validators";
 import {loginUser, logoutUser} from "../../redux/authReducer";
 import {connect} from "react-redux";
 import {Redirect} from "react-router";
 import style from '../common/FormsControl/FormsControls.module.css'
+import {AppStateType} from "../../redux/reduxStore";
 
+type LoginProps = MapDispatchToProps & MapStateToProps
+type FormData = {
+    login: string
+    password :string
+    rememberMe : boolean
+    captchaUrl : string
+}
+const Login : FC<LoginProps> = (props) => {
 
-const Login = (props) => {
-
-    const onSubmit = (formData) => {
-        const {login, password, rememberMe, captcha} = formData;
-        props.loginUser(login, password, rememberMe, captcha)
-
+    const onSubmit = (formData : FormData) => {
+        const {login, password, rememberMe, captchaUrl} = formData;
+        props.loginUser(login, password, rememberMe, captchaUrl)
     }
     if (props.isAuth) {
         return <Redirect to={`/profile`}/>
@@ -29,7 +35,7 @@ const Login = (props) => {
 }
 
 
-const LoginForm = (props) => {
+const LoginForm : FC<InjectedFormProps<FormData, {captchaUrl:string|null}> & {captchaUrl:string|null}> = (props) => {
     const captchaUrl = props.captchaUrl;
     return (
         <form onSubmit={props.handleSubmit}>
@@ -65,12 +71,25 @@ const LoginForm = (props) => {
     )
 }
 
-const LoginReduxForm = reduxForm({
+const LoginReduxForm = reduxForm<FormData, {captchaUrl:string|null}>({
     form: 'loginForm'
 })(LoginForm)
 
-const mapStateToProps = (state) => {
+
+type MapStateToProps = {
+    isAuth: boolean
+    captchaUrl: string | null
+}
+
+type MapDispatchToProps = {
+    loginUser: (login: string, password: string, rememberMe: boolean, captcha: string) => void
+    logoutUser: () => void
+}
+const mapStateToProps = (state: AppStateType): MapStateToProps => {
     return {isAuth: state.authReducer.isAuth, captchaUrl: state.authReducer.captchaUrl}
 }
 
-export default connect(mapStateToProps, {loginUser, logoutUser})(Login);
+export default connect<MapStateToProps, MapDispatchToProps, unknown, AppStateType>(mapStateToProps, {
+    loginUser,
+    logoutUser
+})(Login);

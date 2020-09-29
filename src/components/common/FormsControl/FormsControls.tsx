@@ -1,21 +1,26 @@
-import React, {Component} from "react";
+import React, {Component, FC} from "react";
 import styles from './FormsControls.module.css'
+import {WrappedFieldProps} from "redux-form";
 
-const Textarea = (props) => {
+const Textarea = (props:any) => {
+
     return (
         <textarea {...props}></textarea>
     )
 }
 
-export const Input = (props) => {
+export const Input = (props:any) => {
     return (
        <input {...props}/>
     )
 }
 
-const withValidateForm = (Component) => {
 
-    const ValidateForm = ({input, meta, ...props}) => {
+
+const withValidateForm = (Component: React.FC) => {
+
+    const ValidateForm : FC<WrappedFieldProps>= ({input, meta, ...props}) => {
+        debugger
         const hasError = meta.touched && meta.error;
         return (
             <div className={styles.form_control + " " + (hasError ? styles.error : '')}>
@@ -31,4 +36,4 @@ const withValidateForm = (Component) => {
 }
 
 export const TextareaWithValidation = withValidateForm(Textarea);
-export const InputWithValidation = withValidateForm(Input)
+export const InputWithValidation = withValidateForm(Input);

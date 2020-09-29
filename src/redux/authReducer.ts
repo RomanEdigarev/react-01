@@ -1,4 +1,4 @@
-import {loginAPI, profileAPI, ResultCode, securityAPI} from "../api/api";
+import {loginAPI, profileAPI, ResultCode, ResultCodeForCaptcha, securityAPI} from "../api/api";
 
 import {stopSubmit} from "redux-form";
 import {setUserProfile, SetUserProfileActionType} from './profileReducer';
@@ -125,7 +125,7 @@ export const loginUser = (email: string, password: string, rememberMe: boolean, 
         if (response.data.resultCode === ResultCode.Success) {
             dispatch(getMyProfileThunkCreator())
         } else {
-            if (response.data.resultCode === ResultCode.CaptchaIsRequired) {
+            if (response.data.resultCode === ResultCodeForCaptcha.CaptchaIsRequired) {
                 dispatch(getCaptchaUrl());
             }
             let messages = response.data.messages.length > 0 ? response.data.messages[0] : 'Some error';
