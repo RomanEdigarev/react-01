@@ -1,9 +1,12 @@
-import {loginAPI, profileAPI, ResultCode, ResultCodeForCaptcha, securityAPI} from "../api/api";
+import {ResultCode, ResultCodeForCaptcha} from "../api/api";
 
 import {stopSubmit} from "redux-form";
 import {setUserProfile, SetUserProfileActionType} from './profileReducer';
 import {ThunkAction} from "redux-thunk";
 import {AppStateType} from "./reduxStore";
+import {profileAPI} from "../api/profile-api";
+import {loginAPI} from "../api/login-api";
+import {securityAPI} from "../api/security-api";
 
 const SET_USER_DATA = 'SET_USER_DATA';
 const LOGOUT_USER_DATA = 'LOGOUT_USER_DATA';

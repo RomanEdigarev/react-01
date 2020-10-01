@@ -1,6 +1,6 @@
-import {profileAPI} from "../api/api";
 import {setUserProfile} from './profileReducer';
 import {getMyProfileThunkCreator, setAuthUserData} from "./authReducer";
+import {profileAPI} from "../api/profile-api";
 
 const INITIALIZED_SUCCSES = 'INITIALIZED_SUCCSES';
 

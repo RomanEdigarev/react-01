@@ -1,9 +1,10 @@
-import {profileAPI, ResultCode} from "../api/api";
+import {ResultCode} from "../api/api";
 import {FormAction, stopSubmit} from "redux-form";
 
 import {ProfileType} from "./types/types";
 import {ThunkAction} from "redux-thunk";
 import {AppStateType} from "./reduxStore";
+import {profileAPI} from "../api/profile-api";
 const ADD_POST = 'ADD-POST';
 const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
 const SET_USER_PROFILE = 'SET_USER_PROFILE';
