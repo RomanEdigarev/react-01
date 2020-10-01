@@ -1,10 +1,8 @@
 import React from "react";
 import {connect} from 'react-redux';
 import {
-     followThunkCreator,
-    getUsersThunkCreator,
-    setCurrentPage,
-    toggleFollowingProgress,
+    followThunkCreator,
+    getUsersThunkCreator, setCurrentPageThunkCreator,
     unfollowThunkCreator
 
 } from "../../redux/usersReducer";
@@ -118,7 +116,7 @@ const UsersContainer = compose(
     connect<MapStateToPropsType, MapDispatchToProps, OwnPropsType, AppStateType>
     (mapStateToProps,
         {
-            follow : followThunkCreator, unfollow: unfollowThunkCreator, getUsers: getUsersThunkCreator, setCurrentPage
+            follow : followThunkCreator, unfollow: unfollowThunkCreator, getUsers: getUsersThunkCreator, setCurrentPage:setCurrentPageThunkCreator
 
         })
 )(User)
